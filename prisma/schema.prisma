@@ -1,0 +1,11 @@
+generator client { provider = "prisma-client-js" }
+
+datasource db { provider = "sqlite" url = env("DATABASE_URL") }
+
+model User { id String @id @default(uuid()) email String @unique name String? image String? createdAt DateTime @default(now()) documents Document[] folders Folder[] studySessions StudySession[] }
+
+model Folder { id String @id @default(uuid()) name String owner User @relation(fields: [ownerId], references: [id]) ownerId String documents Document[] createdAt DateTime @default(now()) }
+
+model Document { id String @id @default(uuid()) title String filename String url String text String? owner User @relation(fields: [ownerId], references: [id]) ownerId String folder Folder? @relation(fields: [folderId], references: [id]) folderId String? createdAt DateTime @default(now()) updatedAt DateTime @updatedAt }
+
+model StudySession { id String @id @default(uuid()) user User @relation(fields: [userId], references: [id]) userId String startedAt DateTime endedAt DateTime createdAt DateTime @default(now()) }

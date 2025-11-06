@@ -1,0 +1,3 @@
+import axios from 'axios'
+const OPENAI_KEY = process.env.OPENAI_API_KEY
+export async function callOpenAI(prompt: string, maxTokens = 800) { if (!OPENAI_KEY) throw new Error('Missing OPENAI_API_KEY') const res = await axios.post('https://api.openai.com/v1/chat/completions', { model: 'gpt-4o-mini', messages: [ { role: 'system', content: 'You are an assistant that outputs structured JSON when requested.' }, { role: 'user', content: prompt } ], temperature: 0.2, max_tokens: maxTokens }, { headers: { Authorization: `Bearer ${OPENAI_KEY}`, 'Content-Type': 'application/json' } }) return res.data }
